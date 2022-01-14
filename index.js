@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const { Select, Input, Toggle, Invisible, Form } = require('enquirer');
 const jimp = require('jimp');
 const fs = require('fs');
+const cheerio = require('cheerio');
 
 function titleCase(str) {
     str = str.toString() //this is so cursed but it sometimes breaks otherwise
@@ -152,11 +153,59 @@ function getAndResizeIcons(url) {
                 }
 
                 new Input({
-                    message: 'Cool we\'re all done! Where do you you wanna save your web manifest?',
+                    message: 'Cool we\'re all done with that! Where do you you wanna save your web manifest?',
                     initial: 'webmanifest.json'
                 }).run().then((location) => {
                     let data = JSON.stringify(webManifest, null, 2);
                     fs.writeFileSync(`/home/runner/${process.env['REPL_SLUG']}/${location}`, data);
+
+                    console.log("Generating your service worker...")
+
+                    let filesToCache = fs.readdirSync(`/home/runner/${process.env['REPL_SLUG']}/`);                   
+
+                    const swRegistrarTemplate = `if ("serviceWorker" in navigator) {
+	window.addEventListener("load", function() {
+		navigator.serviceWorker
+			.register("./serviceWorker.js")
+			.then(res => console.log("service worker registered"))
+			.catch(err => console.log("service worker not registered", err))
+	})
+}`
+                    
+                    // you didn't see this code
+                    const safeReplSlug = process.env['REPL_SLUG'].replace('-', '_');
+                    const swTemplate = `const ${safeReplSlug} = '${safeReplSlug}'
+const assets = ${JSON.stringify(filesToCache)}
+
+self.addEventListener("install", installEvent => {
+	installEvent.waitUntil(
+		caches.open(${safeReplSlug}).then(cache => {
+			cache.addAll(assets)
+		})
+	)
+})
+
+self.addEventListener("fetch", fetchEvent => {
+    fetchEvent.respondWith(
+        caches.match(fetchEvent.request).then(res => {
+            return res || fetch(fetchEvent.request)
+        })
+    )
+})
+`
+                    let htmlText = fs.readFileSync(`/home/runner/${process.env['REPL_SLUG']}/index.html`)
+
+                    $ = cheerio.load(htmlText)
+
+                    $('head').append(`<link rel="manifest" href="./${location}" />`);
+                    $('body').append(`<script>${swRegistrarTemplate}</script>`)
+
+                    fs.writeFileSync(`/home/runner/${process.env['REPL_SLUG']}/serviceWorker.js`, swTemplate)
+                    fs.writeFileSync(`/home/runner/${process.env['REPL_SLUG']}/index.html`, $.html())
+                    
+                    
+                    console.log("Alrighty, you're almost all set and ready to go. You'll notice i've edited your index.html to include a new <script> and <meta> element. These are just there to ensure browsers know how to get the information for your PWA.\n")
+                    console.log("If you want some more in depth information about how PWAs work and how to customize your's even more, I highly recommend the MDN docs here: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps. Anyways, happy hacking and have a nice day!")
                 })
             })
         })

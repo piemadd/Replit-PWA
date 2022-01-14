@@ -1,0 +1,24 @@
+{
+  "short_name": "Replit PWA",
+  "name": "Replit PWA - A Nodejs Repl by Piemadd",
+  "description": "A Nodejs Repl by Piemadd",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#080b12",
+  "theme_color": "#080b12",
+  "display": "standalone",
+  "scope": "/",
+  "shortcuts": [],
+  "screenshots": []
+}

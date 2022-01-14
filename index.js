@@ -185,7 +185,7 @@ function getAndResizeIcons(url) {
     }`
                         
                         // you didn't see this code
-                        const safeReplSlug = process.env['REPL_SLUG'].replace('-', '_');
+                        const safeReplSlug = process.env['REPL_SLUG'].split('-').join('_');
                         const swTemplate = `const ${safeReplSlug} = '${safeReplSlug}'
     const assets = ${JSON.stringify(filesToCache)}
     

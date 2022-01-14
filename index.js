@@ -18,7 +18,7 @@ function titleCase(str) {
 }
 
 function resizeIcons() {
-    console.log("Collio, just a little resizing and we'll be good to go...")
+    console.log("Awesome sauce, just a little resizing and we'll be good to go...")
     jimp.read(`/home/runner/${process.env['REPL_SLUG']}/images/icon.png`)
     .then(image => {
         image

@@ -1,6 +1,11 @@
 {
     "name": "replit-easy-pwa",
-    "version": "0.1.0",
+    "homepage": "https://github.com/piemadd/Replit-PWA#readme",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/piemadd/Replit-PWA.git"
+    },
+    "version": "0.1.1",
     "description": "An easy to use tool to turn your static Replit repl into a fully function PWA!",
     "main": "index.js",
     "scripts": {

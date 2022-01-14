@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+//haha jonathan
+
 const fetch = require('node-fetch');
 const { Select, Input, Toggle, Invisible, Form } = require('enquirer');
 const jimp = require('jimp');

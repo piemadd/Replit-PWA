@@ -1,6 +1,6 @@
 {
     "name": "replit-easy-pwa",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "An easy to use tool to turn your static Replit repl into a fully function PWA!",
     "main": "index.js",
     "scripts": {
@@ -8,7 +8,11 @@
         "start": "node index.js"
     },
     "bin": "./index.js",
-    "keywords": ["replit", "pwa", "repl"],
+    "keywords": [
+        "replit",
+        "pwa",
+        "repl"
+    ],
     "author": "Piero Maddaleni <piero@piemadd.com>",
     "license": "PAN",
     "dependencies": {
